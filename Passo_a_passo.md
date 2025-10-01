@@ -65,6 +65,21 @@ TransDecoder.LongOrfs -t /home/gdegaki/transcriptomas/assembly/trinity_SRR894427
 degaki/transcriptomas/Transdecoder/Resultados/Trinity_SRR8944275.trasdecoder_dir/
 
 ```
+
+Os dir gerados, terão
+
+```bash
+cd Trinity_SRR8944275.trasdecoder_dir/
+(transdecoder) [gdegaki@access2 Trinity_SRR8944275.trasdecoder_dir]$ ls
+blastp  trinity_SRR8944275.Trinity.fasta.transdecoder_dir
+(transdecoder) [gdegaki@access2 Trinity_SRR8944275.trasdecoder_dir]$ ls
+blastp  trinity_SRR8944275.Trinity.fasta.transdecoder_dir
+(transdecoder) [gdegaki@access2 Trinity_SRR8944275.trasdecoder_dir]$ cd trinity_SRR8944275.Trinity.fasta.transdecoder_dir/
+(transdecoder) [gdegaki@access2 trinity_SRR8944275.Trinity.fasta.transdecoder_dir]$ ls
+base_freqs.dat  __checkpoints_longorfs  longest_orfs.cds  longest_orfs.gff3  longest_orfs.pep
+(transdecoder) [gdegaki@access2 trinity_SRR8944275.Trinity.fasta.transdecoder_dir]$ 
+```
+
 #2 
 
 Agora precisamos gerar um banco de dado (este sera usado para todas os jobs)
