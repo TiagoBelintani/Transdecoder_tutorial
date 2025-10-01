@@ -201,7 +201,7 @@ mkdir -p /home/gdegaki/transcriptomas/Transdecoder/Resultados/Trinity_SRR8944275
 # Caminhos
 ORF_FILE=/home/gdegaki/transcriptomas/Transdecoder/Resultados/Trinity_SRR8944275.trasdecoder_dir/trinity_SRR8944275.Trinity.fasta.transdecoder_dir/longest_orfs.pep
 PFAM_DB=/home/gdegaki/transcriptomas/Transdecoder/banco_dados_pfam/Pfam-A.hmm
-OUT_DOMTBL=/home/gdegaki/transcriptomas/Transdecoder/Resultados/Trinity_SRR8944275.trasdecoder_dir/pfam/ti.domblout
+OUT_DOMTBL=/home/gdegaki/transcriptomas/Transdecoder/Resultados/Trinity_SRR8944275.trasdecoder_dir/pfam/SRR8944275.domblout
 LOG_FILE=/home/gdegaki/transcriptomas/Transdecoder/Resultados/Trinity_SRR8944275.trasdecoder_dir/pfam/log.pfam
 
 # Rodar hmmscan
@@ -210,6 +210,9 @@ hmmscan --domtblout $OUT_DOMTBL \
         --notextw \
         $PFAM_DB \
         $ORF_FILE > $LOG_FILE
+```
+
+
 
 
 
