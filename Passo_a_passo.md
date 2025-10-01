@@ -1,112 +1,125 @@
-Preparando e Executando o Transdecoder
-Estrutura de Diretórios
-
-bash
+Pipeline TransDecoder para ORFs em aranhas
+#1 Estrutura de Diretórios
 # Acessar diretório de trabalho
 cd transcriptoma/
 
-# Criar pasta principal do Transdecoder
+# Criar pasta principal do TransDecoder
 mkdir Transdecoder
 
 # Criar subpasta para banco de dados
 mkdir Transdecoder/banco_dados
 
-# Acessar subpasta
+# Acessar subpasta do banco
 cd Transdecoder/banco_dados
 
-# Download do Banco de Dados
-
-bash
-
-# Baixar banco de dados UniProt Swiss-Prot
+#2 Download do banco de dados UniProt Swiss-Prot
+# Baixar o banco curado Swiss-Prot
 wget ftp://ftp.uniprot.org/pub/databases/uniprot/current_release/knowledgebase/complete/uniprot_sprot.fasta.gz
 
-# Próximos Passos
-Após o download, você pode descompactar o arquivo:
-
-bash
+# Descompactar o arquivo
 gunzip uniprot_sprot.fasta.gz
 
-O arquivo descompactado (uniprot_sprot.fasta) será utilizado nas etapas subsequentes do pipeline Transdecoder.
 
-#Fluxo
+O arquivo uniprot_sprot.fasta será usado nas etapas seguintes do pipeline TransDecoder.
 
-Nossos diretorios estão organizados assim:
+#3 Organização do fluxo de trabalho
+
+Diretórios do projeto:
 
 Adapters  assembly  busco_analises  fastqc_results  multiqc_report  raw_data
 
-Para esta analise iremos utilizar assembly "Trinity.fasta"
 
-#1
+Para esta análise, utilizaremos assembly: Trinity.fasta
 
-Irei usar como exemplo os dados da Gaby 
+#4 Etapa 1 – TransDecoder.LongOrfs
 
-Primeiro iremos criar a pasta Resultados SRR8944275 (trinity_SRR8944275.Trinity.fasta)
+Criar a pasta de resultados:
 
-```bash
 mkdir -p ~/transcriptomas/Transdecoder/Resultados
-```
-Gerar o o job:
 
-```bash
-nano  Transdecoder_LongOrfs_SRR8944275.slurm
-```
 
-```bash
+Criar o job SLURM:
+
+nano Transdecoder_LongOrfs_SRR8944275.slurm
+
+
+Conteúdo do job:
+
 #!/bin/bash
 #SBATCH -t 3:00:00
 #SBATCH -c 4
 
-
+# Ativar ambiente Conda
 source /home/gdegaki/anaconda3/bin/activate 
 conda activate /home/gdegaki/anaconda3/envs/transdecoder 
 
-TransDecoder.LongOrfs -t /home/gdegaki/transcriptomas/assembly/trinity_SRR8944275.Trinity.fasta -G universal -S --output_dir /home/g
-degaki/transcriptomas/Transdecoder/Resultados/Trinity_SRR8944275.trasdecoder_dir/
+# Executar TransDecoder.LongOrfs
+TransDecoder.LongOrfs \
+  -t /home/gdegaki/transcriptomas/assembly/trinity_SRR8944275.Trinity.fasta \
+  -G universal -S \
+  --output_dir /home/gdegaki/transcriptomas/Transdecoder/Resultados/Trinity_SRR8944275.trasdecoder_dir/
 
-```
+Resultado esperado
 
-Os dir gerados, terão
+Dentro de:
 
-```bash
-cd Trinity_SRR8944275.trasdecoder_dir/
-(transdecoder) [gdegaki@access2 Trinity_SRR8944275.trasdecoder_dir]$ ls
-blastp  trinity_SRR8944275.Trinity.fasta.transdecoder_dir
-(transdecoder) [gdegaki@access2 Trinity_SRR8944275.trasdecoder_dir]$ ls
-blastp  trinity_SRR8944275.Trinity.fasta.transdecoder_dir
-(transdecoder) [gdegaki@access2 Trinity_SRR8944275.trasdecoder_dir]$ cd trinity_SRR8944275.Trinity.fasta.transdecoder_dir/
-(transdecoder) [gdegaki@access2 trinity_SRR8944275.Trinity.fasta.transdecoder_dir]$ ls
-base_freqs.dat  __checkpoints_longorfs  longest_orfs.cds  longest_orfs.gff3  longest_orfs.pep
-(transdecoder) [gdegaki@access2 trinity_SRR8944275.Trinity.fasta.transdecoder_dir]$ 
-```
+cd /home/gdegaki/transcriptomas/Transdecoder/Resultados/Trinity_SRR8944275.trasdecoder_dir/trinity_SRR8944275.Trinity.fasta.transdecoder_dir/
 
-#2 
 
-Agora precisamos gerar um banco de dado (este sera usado para todas os jobs)
+Você encontrará:
 
-Dentro da pasta: /home/gdegaki/transcriptomas/Transdecoder/banco_dados
+base_freqs.dat
+__checkpoints_longorfs
+longest_orfs.cds
+longest_orfs.gff3
+longest_orfs.pep
 
-```bash
+
+O arquivo longest_orfs.pep será usado para BLASTp.
+
+#5 Etapa 2 – Formatar banco BLAST
+
+Dentro da pasta:
+
+cd /home/gdegaki/transcriptomas/Transdecoder/banco_dados
 nano makeblast.slurm
-```
-
-```bash
-makeblastdb -in /home/gdegaki/transcriptomas/Transdecoder/banco_dados/uniprot_sprot.fasta -dbtype prot -out /home/gdegaki/transcriptomas/Transdecoder/banco_dados/uniprot_sprot_db
-```
-
-O resultado: 
-
-makeblast.slurm    uniprot_sprot_db.pdb  uniprot_sprot_db.pin  uniprot_sprot_db.pot  uniprot_sprot_db.ptf  uniprot_sprot.fasta
-slurm-4247477.out  uniprot_sprot_db.phr  uniprot_sprot_db.pjs  uniprot_sprot_db.psq  uniprot_sprot_db.pto
 
 
-Agora na pasta: /home/gdegaki/transcriptomas/Transdecoder
+Conteúdo do job:
 
-```bash
+#!/bin/bash
+#SBATCH -t 1:00:00
+
+makeblastdb -in /home/gdegaki/transcriptomas/Transdecoder/banco_dados/uniprot_sprot.fasta \
+            -dbtype prot \
+            -out /home/gdegaki/transcriptomas/Transdecoder/banco_dados/uniprot_sprot_db
+
+Resultado esperado
+
+Arquivos criados:
+
+makeblast.slurm
+uniprot_sprot_db.pdb
+uniprot_sprot_db.pin
+uniprot_sprot_db.pot
+uniprot_sprot_db.ptf
+uniprot_sprot_db.phr
+uniprot_sprot_db.pjs
+uniprot_sprot_db.psq
+uniprot_sprot_db.pto
+uniprot_sprot.fasta
+slurm-XXXXXX.out
+
+#6 Etapa 3 – BLASTp
+
+Criar o job SLURM:
+
+cd /home/gdegaki/transcriptomas/Transdecoder
 nano blastp_SRR8944275.slurm
-```
 
-```bash
+
+Conteúdo do job:
+
 #!/bin/bash
 #SBATCH -t 5:00:00
 #SBATCH -c 10
@@ -117,8 +130,7 @@ source /home/gdegaki/anaconda3/bin/activate
 conda activate /home/gdegaki/anaconda3/envs/transdecoder
 
 # Definir caminhos
-PEP_FILE=/home/gdegaki/transcriptomas/Transdecoder/Resultados/Trinity_SRR8944275.trasdecoder_dir/trinity_SRR8944275.Trinity.fasta.tr
-ansdecoder_dir/longest_orfs.pep
+PEP_FILE=/home/gdegaki/transcriptomas/Transdecoder/Resultados/Trinity_SRR8944275.trasdecoder_dir/trinity_SRR8944275.Trinity.fasta.transdecoder_dir/longest_orfs.pep
 DB_FASTA=/home/gdegaki/transcriptomas/Transdecoder/banco_dados/uniprot_sprot.fasta
 DB_NAME=/home/gdegaki/transcriptomas/Transdecoder/banco_dados/uniprot_sprot_db
 OUT_DIR=/home/gdegaki/transcriptomas/Transdecoder/Resultados/Trinity_SRR8944275.trasdecoder_dir/blastp
@@ -131,7 +143,7 @@ if [ ! -f "${DB_NAME}.pin" ]; then
     makeblastdb -in $DB_FASTA -dbtype prot -out $DB_NAME
 fi
 
-# Rodar BLASTp
+# Executar BLASTp
 blastp -query $PEP_FILE \
        -db $DB_NAME \
        -evalue 1e-5 \
@@ -139,12 +151,8 @@ blastp -query $PEP_FILE \
        -max_target_seqs 5 \
        -outfmt 6 \
        -out $OUT_DIR/blastp.outfmt6
-```
 
-
-
-
-
+✅
 
 
 
