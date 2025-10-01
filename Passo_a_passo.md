@@ -110,7 +110,7 @@ nano blastp_SRR8944275.slurm
 ```bash
 #!/bin/bash
 #SBATCH -t 5:00:00
-#SBATCH -c 10
+#SBATCH -c 20
 #SBATCH --mem=16G
 
 # Ativar ambiente Conda
@@ -133,8 +133,25 @@ blastp -query /home/gdegaki/transcriptomas/Transdecoder/Resultados/Trinity_SRR89
 
 ```
 
+##Preparação do banco Pfam
 
+Antes de rodar o hmmscan, você precisa do banco Pfam-A.
 
+``bash
+mkdir banco_dados_pfam
+```
+```bash
+cd banco_dados_pfam/
+```
+
+ # Baixar o arquivo Pfam-A (versão fasta) mais recente
+ ```bash
+wget ftp://ftp.ebi.ac.uk/pub/databases/Pfam/current_release/Pfam-A.fasta.gz
+```
+```bash
+# Descompactar
+gunzip Pfam-A.fasta.gz
+```
 
 
 
