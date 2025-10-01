@@ -145,11 +145,14 @@ cd banco_dados_pfam/
 
  # Baixar o arquivo Pfam-A (versão fasta) mais recente
  ```bash
-wget ftp://ftp.ebi.ac.uk/pub/databases/Pfam/current_release/Pfam-A.fasta.gz
+cd /home/gdegaki/transcriptomas/Transdecoder/banco_dados_pfam
+
+wget ftp://ftp.ebi.ac.uk/pub/databases/Pfam/current_release/Pfam-A.hmm.gz
+
 ```
 ```bash
 # Descompactar
-gunzip Pfam-A.fasta.gz
+gunzip Pfam-A.hmm.gz
 ```
 Se ainda não estiver formatado para hmmscan:
 
@@ -165,10 +168,50 @@ nano hmmpress.slurm
 source /home/gdegaki/anaconda3/bin/activate
 conda activate /home/gdegaki/anaconda3/envs/transdecoder
 
-hmmpress Pfam-A.hmm.fasta
+hmmpress /home/gdegaki/transcriptomas/Transdecoder/banco_dados_pfam/Pfam-A.hmm
+
 ```
 
 Isso gera arquivos auxiliares (.h3m, .h3i, .h3f, .h3p) necessários para hmmscan.
+
+```bash
+ls
+hmmpress.slurm  Pfam-A.fasta  Pfam-A.hmm  Pfam-A.hmm.h3f  Pfam-A.hmm.h3i  Pfam-A.hmm.h3m  Pfam-A.hmm.h3p
+```
+
+Agora vamos ao Hmmscan
+
+```bash
+nano hmmscan.slurm
+```
+```bash
+#!/bin/bash
+#SBATCH -t 5:00:00
+#SBATCH -c 20
+#SBATCH --mem=16G
+
+
+# Ativar ambiente Conda
+source /home/gdegaki/anaconda3/bin/activate
+conda activate /home/gdegaki/anaconda3/envs/transdecoder
+
+# Criar diretórios de saída se não existirem
+mkdir -p /home/gdegaki/transcriptomas/Transdecoder/Resultados/Trinity_SRR8944275.trasdecoder_dir/pfam
+
+# Caminhos
+ORF_FILE=/home/gdegaki/transcriptomas/Transdecoder/Resultados/Trinity_SRR8944275.trasdecoder_dir/trinity_SRR8944275.Trinity.fasta.transdecoder_dir/longest_orfs.pep
+PFAM_DB=/home/gdegaki/transcriptomas/Transdecoder/banco_dados_pfam/Pfam-A.hmm
+OUT_DOMTBL=/home/gdegaki/transcriptomas/Transdecoder/Resultados/Trinity_SRR8944275.trasdecoder_dir/pfam/ti.domblout
+LOG_FILE=/home/gdegaki/transcriptomas/Transdecoder/Resultados/Trinity_SRR8944275.trasdecoder_dir/pfam/log.pfam
+
+# Rodar hmmscan
+hmmscan --domtblout $OUT_DOMTBL \
+        --acc \
+        --notextw \
+        $PFAM_DB \
+        $ORF_FILE > $LOG_FILE
+
+
 
 
 
