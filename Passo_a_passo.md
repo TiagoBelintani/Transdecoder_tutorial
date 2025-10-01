@@ -117,25 +117,23 @@ nano blastp_SRR8944275.slurm
 source /home/gdegaki/anaconda3/bin/activate
 conda activate /home/gdegaki/anaconda3/envs/transdecoder
 
-# Definir caminhos
-PEP_FILE=/home/gdegaki/transcriptomas/Transdecoder/Resultados/Trinity_SRR8944275.trasdecoder_dir/trinity_SRR8944275.Trinity.fasta.tr
-ansdecoder_dir/longest_orfs.cds
-DB_FASTA=/home/gdegaki/transcriptomas/Transdecoder/banco_dados/uniprot_sprot.fasta
-DB_NAME=/home/gdegaki/transcriptomas/Transdecoder/banco_dados/uniprot_sprot_db
 OUT_DIR=/home/gdegaki/transcriptomas/Transdecoder/Resultados/Trinity_SRR8944275.trasdecoder_dir/blastp
 
 # Criar diretório de saída se não existir
 mkdir -p $OUT_DIR
 
 # Rodar BLASTp
-blastp -query $PEP_FILE \
-       -db $DB_NAME \
+blastp -query /home/gdegaki/transcriptomas/Transdecoder/Resultados/Trinity_SRR8944275.trasdecoder_dir/trinity_SRR8944275.Trinity.fasta.transdecoder_dir/longest_orfs.pep \
+       -db /home/gdegaki/transcriptomas/Transdecoder/banco_dados/uniprot_sprot_db \
        -evalue 1e-5 \
        -num_threads 10 \
        -max_target_seqs 5 \
        -outfmt 6 \
        -out $OUT_DIR/blastp.outfmt6
+
 ```
+
+
 
 
 
