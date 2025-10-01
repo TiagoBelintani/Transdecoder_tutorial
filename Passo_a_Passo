@@ -1,0 +1,23 @@
+##1. Criar o ambiente
+
+conda create -n transdecoder -c bioconda -c conda-forge transdecoder
+
+##2. Ativar o ambiente
+
+```bash
+conda activate transdecoder
+```
+
+##3. Testar instalação
+```bash
+TransDecoder.LongOrfs -h
+```
+```bash
+TransDecoder.Predict -h
+```
+
+Se aparecer a ajuda dos programas, está pronto
+
+
+
+
