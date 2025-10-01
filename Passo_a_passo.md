@@ -1,5 +1,4 @@
-revisa e torna mais didatico sem mudar diretorios, ou sem mudancas exageradas Preparando e Executando o Transdecoder
-Estrutura de Diretórios
+#Estrutura de Diretórios
 
 bash
 # Acessar diretório de trabalho
@@ -152,7 +151,24 @@ wget ftp://ftp.ebi.ac.uk/pub/databases/Pfam/current_release/Pfam-A.fasta.gz
 # Descompactar
 gunzip Pfam-A.fasta.gz
 ```
+Se ainda não estiver formatado para hmmscan:
 
+```bash
+nano hmmpress.slurm
+```
+
+```bash
+#!/bin/bash
+#SBATCH -t 5:00:00
+#SBATCH -c 4
+
+source /home/gdegaki/anaconda3/bin/activate
+conda activate /home/gdegaki/anaconda3/envs/transdecoder
+
+hmmpress Pfam-A.hmm.fasta
+```
+
+Isso gera arquivos auxiliares (.h3m, .h3i, .h3f, .h3p) necessários para hmmscan.
 
 
 
