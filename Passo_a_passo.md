@@ -235,6 +235,14 @@ conda activate /home/gdegaki/anaconda3/envs/transdecoder
 TransDecoder.Predict -t /home/gdegaki/transcriptomas/assembly/trinity_SRR8944275.Trinity.fasta --retain_pfam_hits /home/gdegaki/transcriptomas/Transdecoder/Resultados/Trinity_SRR8944275.trasdecoder_dir/pfam/SRR8944275.domblout --retain_blastp_hits /home/gdegaki/transcriptomas/Transdecoder/Resultados/Trinity_SRR8944275.trasdecoder_dir/blastp/blastp.outfmt6 -O  /home/gdegaki/transcriptomas/Transdecoder/Resultados/Trinity_SRR8944275.trasdecoder_dir/
 ```
 
+0s resultados vao se parecer com:
+
+ls
+blastp                                             trinity_SRR8944275.Trinity.fasta.transdecoder_dir
+pfam                                               trinity_SRR8944275.Trinity.fasta.transdecoder.gff3
+trinity_SRR8944275.Trinity.fasta.transdecoder.bed  trinity_SRR8944275.Trinity.fasta.transdecoder.pep
+trinity_SRR8944275.Trinity.fasta.transdecoder.cds
+
 
 
 
