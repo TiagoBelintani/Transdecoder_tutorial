@@ -315,27 +315,13 @@ Arquivo trinity_SRR8944275.unigenes.cds.clstr → clusters formados.
 
 Para saber quantos unigenes foram obtidos após o CD-HIT, podemos contar o número de sequências no arquivo FASTA resultante (.cds).
 
-
-Script simples em Bash:
-```bash
-nano contar_unigenes.sh
+ ```bash
+/home/gdegaki/transcriptomas/Transdecoder/Resultados/Trinity_SRR8944275.trasdecoder_dir
 ```
+
 ```bash
-#!/bin/bash
-
-# Arquivo de unigenes gerado pelo CD-HIT
-INPUT="trinity_SRR8944275.unigenes.cds"
-
-# Conta quantas sequências existem (linhas começando com ">")
-UNIGENES=$(grep -c "^>" $INPUT)
-
-echo "Número total de unigenes encontrados: $UNIGENES"
-
-
-Execução:
-
-bash contar_unigenes.sh
-
+grep -c "^>" trinity_SRR8944275.unigenes.cds
+```
 
 Saída esperada:
 
