@@ -212,9 +212,28 @@ hmmscan --domtblout $OUT_DOMTBL \
         $ORF_FILE > $LOG_FILE
 ```
 
+#Passo TransDecoder Predicti
+
+Acesse: /home/gdegaki/transcriptomas/Transdecoder
 
 
+```bash
+       nano Transdecoder.Predict.slurm
+```
+```
+#!/bin/bash
+#SBATCH -t 5:00:00
+#SBATCH -c 10
+#SBATCH --mem=16G
 
+
+# Ativar ambiente Conda
+source /home/gdegaki/anaconda3/bin/activate
+conda activate /home/gdegaki/anaconda3/envs/transdecoder
+
+
+TransDecoder.Predict -t /home/gdegaki/transcriptomas/assembly/trinity_SRR8944275.Trinity.fasta --retain_pfam_hits home/gdegaki/transcriptomas/Transdecoder/Resultados/Trinity_SRR8944275.trasdecoder_dir/pfam/SRR8944275.domblout --retain_blastp_hits /home/gdegaki/transcriptomas/Transdecoder/Resultados/Trinity_SRR8944275.trasdecoder_dir/blastp/blastp.outfmt6 -O  /home/gdegaki/transcriptomas/Transdecoder/Resultados/Trinity_SRR8944275.trasdecoder_dir/
+```
 
 
 
